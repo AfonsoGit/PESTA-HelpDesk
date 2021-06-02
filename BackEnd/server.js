@@ -1,35 +1,40 @@
 //Includes
 const express = require('express');
 const session = require('express-session');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+require("dotenv").config();
+const DB = require('./database/database');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
+app.use(
+    session({
+        secret: process.env.SECRET,
+        cookie: { maxAge: 300 * 1000 }, //5 min
+        saveUninitialized: true,
+        resave: false,
+        store: new session.MemoryStore(),
+    })
+);
 
-//Sequencia de HTTP Requests para receber submissão de dados (app.get)
-//e leitura dos existentes para uma tabela (app.post)
-app.post('/users', (req, res) => {
-    //user
-    const data = req.body;
-    console.log(data);
-    info.push(data); //Adiciona os critérios definidos
-    res.status(201).send('Created Entry');
+//Mostra o tipo de pedido HTTP e o URL para que é dirigido
+app.use((req, res, next) => {
+    console.log(`${req.method} - ${req.url}`);
+    next();
 })
 
-//users
-const info = [
-    {id: 1, sala: 'F403', motivo: 'Componente Danificado', descricao: 'Microcontrolador ATMEGA328P'},
-    {id: 2, sala: 'F404', motivo: 'Computador', descricao: 'Não entra no Windows'},
-    {id: 3, sala: 'F405', motivo: 'Laboratório', descricao: 'Fonte de alimentação não funciona'}
-];
-//Mostra o que está no info
-app.get('/users', (req, res) => {
-    console.log(req.body);
-    res.status(200).send(info);
-});
+//Submissão e mostra de tickets
+app.use('/ticket', require('./routes/ticket'));
 
-app.listen(port, function() {
+//Login
+app.use('/login', require('./routes/login'));
+
+
+app.listen(port, function () {
     console.log('Listening to port %d', port);
 })
