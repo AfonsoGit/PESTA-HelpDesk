@@ -18,8 +18,8 @@ const columns = [
   { field: 'sala', headerName: 'Sala', width: 130, editable: false },
   { field: 'motivo', headerName: 'Motivo', width: 130, editable: false },
   { field: 'descricao', headerName: 'Descrição', width: 300, editable: false },
-  { field: 'prioridade', headerName: 'Prioridade', width: 100, editable: true},
-  { field: 'estado', headerName: 'Estado', width: 130, editable: true}
+  { field: 'prioridade', headerName: 'Prioridade', width: 100, editable: false},
+  { field: 'estado', headerName: 'Estado', width: 130, editable: false}
 ];
 
 function TicketHistory() {

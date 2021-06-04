@@ -13,11 +13,12 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70, editable: false },
-  { field: 'submissor', headerName: 'Submissor', width: 150, editable: true },
-  { field: 'sala', headerName: 'Sala', width: 130, editable: false },
-  { field: 'motivo', headerName: 'Motivo', width: 130, editable: false },
+  { field: 'submissor', headerName: 'Submissor', width: 130, editable: false },
+  { field: 'sala', headerName: 'Sala', width: 100, editable: false },
+  { field: 'motivo', headerName: 'Motivo', width: 200, editable: false },
   { field: 'descricao', headerName: 'Descrição', width: 300, editable: false },
-  { field: 'estado', headerName: 'Estado', width: 300, editable: true }
+  { field: 'estado', headerName: 'Estado', width: 300, editable: false },
+  { field: 'prioridade', headerName: 'Prioridade', width: 130, editable: true}
 ];
 
 function TicketConsulting() {
@@ -40,7 +41,7 @@ function TicketConsulting() {
         field,
         props.value
       ]
-      axios.post('/ticket/editing', data)
+      axios.put('/ticket/editing', data)
     },
     [],
   );
@@ -51,6 +52,8 @@ function TicketConsulting() {
           rows={rows}
           columns={columns}
           onEditCellChangeCommitted={handleEditCellChangeCommitted}
+          pageSize={99}
+          disableColumnMenu
         />
       </div>
   );
