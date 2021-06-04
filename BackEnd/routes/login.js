@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
                     })
 
                     req.session.user = result;
-                    res.json({ auth: true, token: token, result: result });
+                    res.status(202).json({ auth: true, token: token, result: result });
                 } else {
                     res.send({ message: "Password diferente" });
                 }
