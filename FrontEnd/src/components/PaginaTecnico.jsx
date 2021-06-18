@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Grid, Button } from '@material-ui/core';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //Biblioteca para fazer routing entre paginas
-import jwt_decode from 'jwt-decode';
-import TicketConsulting from '../TicketConsulting'; //Página para ver estado dos tickets
-import TicketCreation from '../TicketCreation'; //Página para criar tickets
-import Nav from './NavBarTecnico'; //Barra de navegação
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Paper, Grid, Button } from '@material-ui/core'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom' //Biblioteca para fazer routing entre paginas
+import jwt_decode from 'jwt-decode'
+import TicketHistory from '../TicketHistory'
+import TicketConsulting from '../TicketConsulting' //Página para ver estado dos tickets
+import TicketCreation from '../TicketCreation' //Página para criar tickets
+import TicketLab from '../TicketLab' //Página para 
+import Nav from './NavBarTecnico' //Barra de navegação
 
 
 //Página que vai ser mostrada para todas as pessoas. ASD
@@ -40,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 //Função main da página
 const PaginaTecnico = () => {
-  const classes = useStyles();
-  const [isLogOut, setIsLogOut] = useState(false);
+  const classes = useStyles()
+  const [isLogOut, setIsLogOut] = useState(false)
 
 
   function handleClick() {
@@ -55,7 +57,8 @@ const PaginaTecnico = () => {
 
   const token = localStorage.getItem("token")
   const decoded = jwt_decode(token)
-  
+
+
   return (
     <div >
       <Grid container item xs={12} justify="center" alignItems="center">
@@ -70,14 +73,16 @@ const PaginaTecnico = () => {
         </Grid>
         <Grid container item xs={9} />
         <Grid container item xs={11}>
-          <Router>
-            <Nav />
-            <Switch>
-              <Route path="/tecnico" exact />
-              <Route path="/tecnico/criar" exact component={TicketCreation} />
-              <Route path="/tecnico/consultar" exact component={TicketConsulting} />
-            </Switch>
-          </Router>
+            <Router>
+              <Nav />
+              <Switch>
+                <Route path="/tecnico" exact />
+                <Route path="/tecnico/criar" exact component={TicketCreation} />
+                <Route path="/tecnico/consultar" exact component={TicketConsulting} />
+                <Route path="/tecnico/sortByLabs" exact component={TicketLab} />
+                <Route path="/tecnico/history" exact component={TicketHistory} />
+              </Switch>
+            </Router>
         </Grid>
       </Grid>
     </div>

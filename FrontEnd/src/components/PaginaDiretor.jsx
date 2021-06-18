@@ -47,7 +47,7 @@ const PaginaDiretor = () => {
     setIsLogOut(true);
   }
 
-  if (isLogOut && !localStorage.getItem("token")) {
+  if (isLogOut) {
     return <Redirect to="/" />
   }
 
@@ -56,13 +56,13 @@ const PaginaDiretor = () => {
 
   return (
     <div>
-      <Grid container item xs={12} justify="center" alignItems="center">
+      <Grid container item xs={12} justify="center">
         <Grid container item xs={11} className={classes.header}  >
           {/* Meter imagem do banner do DEE */}
           <br />
           <Paper className={classes.paper}>Helpdesk DEE</Paper>
         </Grid>
-        <Grid container item xs={2} className={classes.userGrid} direction="column" alignItems="flex-start">
+        <Grid container item xs={2} className={classes.userGrid} direction="column" alignItems="flex-start" justify="flex-start">
           Nome: {decoded.id}
           <Button className={classes.botoes} variant="contained" onClick={handleClick}>LogOut</Button>
         </Grid>

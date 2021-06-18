@@ -6,19 +6,20 @@ import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 400,
-    width: '100%'
-  },
+    width: '100%',
+  }
 
 }));
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70, editable: false },
-  { field: 'submissor', headerName: 'Submissor', width: 130, editable: false },
-  { field: 'sala', headerName: 'Sala', width: 100, editable: false },
-  { field: 'motivo', headerName: 'Motivo', width: 200, editable: false },
-  { field: 'descricao', headerName: 'Descrição', width: 300, editable: false },
-  { field: 'estado', headerName: 'Estado', width: 300, editable: false },
-  { field: 'prioridade', headerName: 'Prioridade', width: 130, editable: true}
+  { field: 'pessoa', headerName: 'Submissor', width: 100 },
+  { field: 'sala', headerName: 'Sala', width: 70 },
+  { field: 'motivo', headerName: 'Motivo', width: 300 },
+  { field: 'descricao', headerName: 'Descrição', width: 300 },
+  { field: 'prioridade', headerName: 'Prioridade', width: 120, editable: true },
+  { field: 'estado', headerName: 'Estado', width: 200, editable: true },
+  { field: 'diretor', headerName: 'Diretor', width: 90 },
+  { field: 'tecnico_responsavel', headerName: 'Técnico', width: 90 }
 ];
 
 function TicketConsulting() {

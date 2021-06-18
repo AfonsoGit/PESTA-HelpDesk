@@ -7,19 +7,20 @@ import jwt_decode from 'jwt-decode';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 400,
-    width: '70%'
-  },
+    width: '100%',
+  }
 
 }));
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70, editable: false },
-  { field: 'pessoa', headerName: 'Submissor', width: 150, editable: false },
-  { field: 'sala', headerName: 'Sala', width: 130, editable: false },
-  { field: 'motivo', headerName: 'Motivo', width: 130, editable: false },
-  { field: 'descricao', headerName: 'Descrição', width: 300, editable: false },
-  { field: 'prioridade', headerName: 'Prioridade', width: 100, editable: false},
-  { field: 'estado', headerName: 'Estado', width: 130, editable: false}
+  { field: 'pessoa', headerName: 'Submissor', width: 100 },
+  { field: 'sala', headerName: 'Sala', width: 70 },
+  { field: 'motivo', headerName: 'Motivo', width: 300 },
+  { field: 'descricao', headerName: 'Descrição', width: 300 },
+  { field: 'prioridade', headerName: 'Prioridade', width: 120, editable: true },
+  { field: 'estado', headerName: 'Estado', width: 200, editable: true },
+  { field: 'diretor', headerName: 'Diretor', width: 90 },
+  { field: 'tecnico_responsavel', headerName: 'Técnico', width: 90 }
 ];
 
 function TicketHistory() {
@@ -40,9 +41,10 @@ function TicketHistory() {
   return (
     <div className={classes.root}>
       <DataGrid
-        rows={rows.filter(row => row.pessoa === decoded.id)} /* DEF - Username */
+        rows={rows.filter(row => row.pessoa === decoded.id)}
         columns={columns}
         pageSize={99}
+        disableColumnMenu
       />
     </div>
   );

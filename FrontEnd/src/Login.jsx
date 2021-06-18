@@ -34,7 +34,7 @@ const validate = values => {
     if (!values.username) {
         errors.username = 'Required'
     }
-    if (values.username.length >= 10) {
+    if (values.username.length >= 50) {
         errors.username = 'Demasiados carateres'
     }
 
@@ -56,7 +56,7 @@ function Login() {
                     alert("Dados Inválidos!!")
                 } else {
                     localStorage.setItem("token", res.data.token)
-                    setDataValidated(res.data.result[0].username)
+                    setDataValidated(res.data.result[0])
                 }
             })
     }
@@ -73,9 +73,9 @@ function Login() {
     //Validar se o utilizador está validado (loginStatus) e se possui um token (token)
     if (localStorage.getItem("token")) {
         //Dependendo do utilizador, pode haver 
-        if (dataValidated === 'diretor') return <Redirect to="/diretor" />;
-        if (dataValidated === 'tecnico') return <Redirect to="/tecnico" />;
-        if (dataValidated === 'docente') return <Redirect to="/docente" />;
+        if (dataValidated.username === 'fdp') return <Redirect to="/diretor" />
+        if (dataValidated.username === 'jes' || dataValidated.username === 'vmcc') return <Redirect to="/tecnico" />
+        if (dataValidated.username === 'vrc') return <Redirect to="/docente" />
     }
 
     return (

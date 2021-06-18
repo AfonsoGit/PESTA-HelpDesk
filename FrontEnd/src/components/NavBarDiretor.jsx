@@ -7,28 +7,33 @@ const useStyles = makeStyles((theme) => ({
     botoes: {
         background: "#144f84",
         color: "#ffffff",
+        marginTop: "0.3cm",
+        marginBottom: "0.3cm",
+    },
+    botaoFinal: {
+        background: "#144f84",
+        color: "#ffffff",
+        marginTop: "0.3cm",
+        marginBottom: "0.7cm",
     }
+
 }));
 
 
 const NavBar = () => {
     const classes = useStyles();
 
-    return(
-        <Grid container item xs={4}>
-        <nav>
+    return (
+        <Grid container item xs={4} direction="column">
             <Link to='/diretor'>
                 <Button variant="contained" className={classes.botoes} >Home</Button>
             </Link>
-            <br /> <br />
             <Link to='/diretor/criar'>
                 <Button variant="contained" className={classes.botoes} >Criar ticket</Button>
             </Link>
-            <br /> <br />
             <Link to='/diretor/consultar'>
-                <Button variant="contained" className={classes.botoes} >Consultar tickets submetidos</Button>
+                <Button variant="contained" className={classes.botaoFinal} >Consultar tickets submetidos</Button>
             </Link>
-        </nav>
         </Grid>
     )
 }
