@@ -12,25 +12,17 @@ const router = Router();
 router.post('/', (req, res) => {
     const { username, password } = req.body;
 
-    console.log(username);
-    console.log(password);
-
-
     DB.query(
         "SELECT * FROM users WHERE username = ?;",
         username,
         (error, result) => {
-            console.log("Erro:", error);
-            console.log("Resultado:", result);
             if (error) {
                 res.send({ error: error });
             }
             if (result[0].username == username) {
                 if (result[0].password == password) {
                     const id = result[0].username;
-                    const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-                        expiresIn: "1h",
-                    })
+                    const token = jwt.sign({ id }, process.env.JWT_SECRET)
 
                     req.session.user = result;
                     res.status(202).json({ auth: true, token: token, result: result });
@@ -43,6 +35,11 @@ router.post('/', (req, res) => {
         }
     );
 });
+
+router.delete('/', (req, res) => {
+    DB.query('DELETE FROM users')
+    res.status(410).send('Deleted')
+})
 
 //"Return"
 module.exports = router;

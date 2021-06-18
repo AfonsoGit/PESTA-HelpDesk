@@ -3,7 +3,6 @@ const express = require('express');
 const session = require('express-session');
 
 require("dotenv").config();
-const DB = require('./database/database');
 
 const app = express();
 const port = process.env.PORT || 5000;

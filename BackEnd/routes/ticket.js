@@ -7,30 +7,46 @@ const DB = require('../database/database');
 //Middleware
 const router = Router();
 
-//Array onde estarão contidos os tickets todos
-const info = [
-    { id: 1, sala: 'F404', motivo: 'Computador', descricao: 'Virus', submissor: 'diretor', estado: 'A ser processado' },
-    { id: 2, sala: 'F403', motivo: 'Componente Danificado', descricao: 'Microcontrolador ATMEGA328P', submissor: 'docente', estado: 'A ser processado' },
-    { id: 3, sala: 'F404', motivo: 'Osciloscópio', descricao: 'Mostrador partido', submissor: 'diretor', estado: 'A ser processado' },
-    { id: 4, sala: 'F405', motivo: 'Laboratório', descricao: 'Fonte de alimentação não funciona', submissor: 'tecnico', estado: 'A ser processado' },
-    { id: 5, sala: 'F404', motivo: 'Computador', descricao: 'Não entra no Windows', submissor: 'diretor', estado: 'A ser processado' }
-];
-
 //Pedido GET do cliente para mostrar o conteúdo da DB
 router.get('/', async (req, res) => {
-    const result = await DB.promise().query(`SELECT * FROM tickets`)
+    const result = await DB.promise().query(`SELECT * FROM tickets, instalacoes where tickets.sala = instalacoes.id_instalacao`)
     res.status(200).send(result[0])
 });
 
+router.get('/lab', async (req, res) => {
+    const id = req.query.id
+    const result_dir = await DB.promise().query(`SELECT * FROM tickets, instalacoes WHERE tickets.sala = instalacoes.id_instalacao AND instalacoes.diretor = ?`, id)
+    if (result_dir[0].length == 0) {
+
+        const result_tec = await DB.promise().query(`SELECT * FROM tickets, instalacoes WHERE tickets.sala = instalacoes.id_instalacao AND instalacoes.tecnico_responsavel = ?`, id)
+        if (result_tec[0].length == 0) {
+            res.status(200).send("Sem tickets para esse user")
+        } else {
+            res.status(200).send(result_tec[0])
+        }
+
+    } else {
+        res.status(200).send(result_dir[0])
+    }
+
+})
+
+router.post('/labTec', async (req, res) => {
+    const { id } = req.body
+    const result = await DB.promise().query(`SELECT * FROM tickets, instalacoes WHERE tickets.sala = instalacoes.id_instalacao AND instalacoes.tecnico_responsavel = ?`, id)
+    console.log(result)
+    res.status(200).send(result)
+})
+
 //Pedido POST do cliente para submeter tickets novos e guardar na DB
 router.post('/', (req, res) => {
-    const { id, sala, motivo, descricao, submissor, estado, prioridade } = req.body
-    //info.push(data)
+    const { id, sala, motivo, descricao, pessoa, estado, prioridade } = req.body
+
     //Estrutura para submeter tickets (Alterar parametros de values)
     try {
         DB.query("INSERT INTO tickets VALUES(?, ?, ?, ?, ?, ?, ?)",
-            [id, sala, motivo, descricao, submissor, estado, prioridade]);
-        res.status(201).send("Entry Created")
+            [id, sala, motivo, descricao, pessoa, estado, prioridade]);
+        res.status(201)
     }
     catch (error) {
         console.log(error)
@@ -40,6 +56,7 @@ router.post('/', (req, res) => {
 //Pedido POST do cliente para alteração dos dados na tabela
 router.put('/editing', (req, res) => {
     const dados = req.body
+
     //id = dados[0]; campo/coluna = dados[1]; valor do campo/coluna = dados[2]
     if (dados[1] === "estado") {
         DB.query("UPDATE tickets SET estado = ? WHERE id = ?",
@@ -68,7 +85,7 @@ router.put('/editing', (req, res) => {
 })
 
 //Pedido POST para eliminar linhas na DB
-router.post('/deleting', (req, res) => {
+router.delete('/', (req, res) => {
     DB.query('DELETE FROM tickets')
     res.status(410).send('Deleted')
 })
